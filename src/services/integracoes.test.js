@@ -1,6 +1,6 @@
 import { buscaTransacoes } from './transacoes';
 import api from './api';
-import { atualizaSaldo, buscaSaldo } from './saldo';
+import { buscaSaldo } from './saldo';
 
 jest.mock('./api');
 
