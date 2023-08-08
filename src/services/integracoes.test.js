@@ -1,5 +1,6 @@
 import { buscaTransacoes } from './transacoes';
 import api from './api';
+import { buscaSaldo } from './saldo';
 
 jest.mock('./api');
 
@@ -31,6 +32,18 @@ const mockRequisicaoErro = () => {
   });
 };
 
+const mockRequisicaoSaldo = (retorno) => {
+  return new Promise((res) => {
+    setTimeout(() => {
+      res({
+        data: {
+          valor: retorno,
+        },
+      });
+    });
+  });
+};
+
 describe('Requisições para API', () => {
   it('Deve retornar uma lista de transações', async () => {
     api.get.mockImplementation(() => mockRequisicao(mockTransacao));
@@ -46,7 +59,16 @@ describe('Requisições para API', () => {
 
     const transacoes = await buscaTransacoes();
 
-    expect(transacoes).toEqual([]);
     expect(api.get).toHaveBeenCalledWith('/transacoes');
+    expect(transacoes).toEqual([]);
+  });
+
+  it('Deve retornar o saldo correto', async () => {
+    api.get.mockImplementation(() => mockRequisicaoSaldo(1500));
+
+    const saldo = await buscaSaldo();
+
+    expect(api.get).toHaveBeenCalledWith('/saldo');
+    expect(saldo).toEqual(1500);
   });
 });
