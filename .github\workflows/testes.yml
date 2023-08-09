@@ -1,0 +1,11 @@
+- name: Use Node.js $({ matrix.node-version })
+  uses: actions/setup-node@v3
+  with:
+    node-version: $({ matrix.node-version })
+- run: npm ci
+
+- name: Testes
+  run: npm test
+
+- name: Monitor de cobertura de testes
+  run: npm rum test:coverage
